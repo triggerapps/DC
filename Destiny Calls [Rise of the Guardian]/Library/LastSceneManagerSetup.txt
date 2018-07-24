@@ -1,0 +1,4 @@
+sceneSetups:
+- path: Assets/07_Scenes/Outside.unity
+  isLoaded: 1
+  isActive: 1
