@@ -68,16 +68,16 @@
     <Compile Include="Assets\08_Scripts\Editors\CameraEditor\stolenController\PlayerSet\Editor\vThirdPersonInputEditor.cs" />
     <Compile Include="Assets\08_Scripts\Editors\CameraEditor\stolenController\PlayerSet\Generic\Editor\vEditorHelper.cs" />
     <Reference Include="UnityEditor.StandardEvents">
-      <HintPath>/Users/eddieteah/OneDrive/GitHub/Destiny-Calls-Rise-of-the-Guardian/Destiny Calls [Rise of the Guardian]/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
+      <HintPath>/Users/eddieteah/Documents/GitHub/DC/Destiny Calls [Rise of the Guardian]/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>/Users/eddieteah/OneDrive/GitHub/Destiny-Calls-Rise-of-the-Guardian/Destiny Calls [Rise of the Guardian]/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>/Users/eddieteah/Documents/GitHub/DC/Destiny Calls [Rise of the Guardian]/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>/Users/eddieteah/OneDrive/GitHub/Destiny-Calls-Rise-of-the-Guardian/Destiny Calls [Rise of the Guardian]/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>/Users/eddieteah/Documents/GitHub/DC/Destiny Calls [Rise of the Guardian]/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>/Users/eddieteah/OneDrive/GitHub/Destiny-Calls-Rise-of-the-Guardian/Destiny Calls [Rise of the Guardian]/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>/Users/eddieteah/Documents/GitHub/DC/Destiny Calls [Rise of the Guardian]/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>/Applications/Unity/Unity.app/Contents/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>

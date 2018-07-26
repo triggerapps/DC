@@ -1,2 +1,4 @@
 /Users/eddieteah/Documents/GitHub/Destiny-Calls-Rise-of-the-Guardian/Destiny Calls [Rise of the Guardian]/obj/Debug/Assembly-CSharp.csprojResolveAssemblyReference.cache
 /Users/eddieteah/Documents/GitHub/Destiny-Calls-Rise-of-the-Guardian/Destiny Calls [Rise of the Guardian]/obj/Debug/Assembly-CSharp.csproj.CoreCompileInputs.cache
+/Users/eddieteah/Documents/GitHub/DC/Destiny Calls [Rise of the Guardian]/obj/Debug/Assembly-CSharp.csprojResolveAssemblyReference.cache
+/Users/eddieteah/Documents/GitHub/DC/Destiny Calls [Rise of the Guardian]/obj/Debug/Assembly-CSharp.csproj.CoreCompileInputs.cache
