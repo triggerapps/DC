@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/07_Scenes/Outside.unity
+- path: Assets/07_Scenes/Intro_.unity
   isLoaded: 1
   isActive: 1

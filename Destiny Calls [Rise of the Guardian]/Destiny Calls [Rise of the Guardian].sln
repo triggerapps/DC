@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio for Mac
+# Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Destiny Calls [Rise of the Guardian]", "Assembly-CSharp.csproj", "{AEBAB907-7694-9D85-2E93-BD80126139BD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Destiny Calls [Rise of the Guardian]", "Assembly-CSharp-Editor.csproj", "{A6146F53-BD1A-952C-492E-96E8B56B5A0B}"

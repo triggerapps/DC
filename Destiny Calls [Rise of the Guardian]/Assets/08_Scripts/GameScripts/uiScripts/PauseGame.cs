@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class PauseGame : MonoBehaviour {
@@ -23,7 +24,12 @@ public class PauseGame : MonoBehaviour {
 
 
 	}
-
+    public void QuitApplication()
+    {
+       
+            Application.Quit();
+       
+    }
     public void Pause()
     {
         if (PauseGame_canvas_Box.gameObject.activeInHierarchy == false)
