@@ -1,3 +1,0 @@
--p_scripts = player scripts
--g_scripts = game scripts
--menu_scripts = Menu scripts
