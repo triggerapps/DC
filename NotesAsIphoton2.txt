@@ -1,0 +1,10 @@
+-Connecting Photon2.0
+-Make and Account 
+-On the website make an App
+(copy the ID below the name of the app)
+-Open Unity; make sure you create an empty project from start.
+Then install Photon 2, the lates 2019 version doesnt work.
+-So use the Unity 2019.30a5 Personal version
+-Then Make the PhotonLobby script in your Script folder
+
+----------------------------------
