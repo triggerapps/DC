@@ -1,15 +1,23 @@
 ﻿
 using UnityEngine;
+using Photon.Realtime;
 using Photon.Pun;
 
 
 namespace Com.TriggerAppsProduction.NeverRage
 {
 
-    public class Launcher : MonoBehaviour
+    public class Launcher : MonoBehaviourPunCallbacks
     {
+
+
         /*Testing My Network Application */
         #region Private Serializabe Fields
+
+        [Tooltip("The maximum number of players per room. When a room is full, it can't be joined by new players, and so new room will be created")]
+        [SerializeField]
+        private byte maxPlayersPerRoom = 4;
+
         #endregion
 
         #region Private Field
@@ -26,6 +34,7 @@ namespace Com.TriggerAppsProduction.NeverRage
         #endregion
         #region MonoBehaviour call Backs
 
+       
         void Awake()
         {
             // #Critical
@@ -41,8 +50,27 @@ namespace Com.TriggerAppsProduction.NeverRage
 
         void Start()
         {
-            Connect();
+          
         }
+
+        #region MonoBehaviorPunCallbacks Callbacks
+        /*
+         * inform dev and client about networking to Master... connection status
+         */
+        public override void OnConnectedToMaster()
+        {
+            Debug.Log("Photon 2.0 : OnConnectedToMaster() was called");
+
+         
+        }
+
+        public override void OnDisconnected(DisconnectCause cause)
+        {
+            Debug.LogWarningFormat("PUN Basics Tutorial/Launcher: OnDisconnected() was called by PUN with reason {0}", cause);
+        }
+       
+        #endregion
+
         #endregion
 
 
@@ -61,6 +89,9 @@ namespace Com.TriggerAppsProduction.NeverRage
                 Debug.Log("Connected");
                 // #Critical we need at this point to attempt joining a Random Room. If it fails, we'll get notified in OnJoinRandomFailed() and we'll create one.
                 PhotonNetwork.JoinRandomRoom();
+
+                /* Callback for room Not_connected
+                */
             }
             else
             {
@@ -68,9 +99,35 @@ namespace Com.TriggerAppsProduction.NeverRage
                 // #Critical, we must first and foremost connect to Photon Online Server.
                 PhotonNetwork.GameVersion = gameVersion;
                 PhotonNetwork.ConnectUsingSettings();
+             
+
+                /* Callback for room connected
+                 */
+
             }
+          
+         
         }
 
+        /* Join WPC section for response on room finding
+         * the script below is called after I stoped testing the game
+         */
+        public override void OnJoinRandomFailed(short returnCode, string message)
+        {
+            Debug.Log("PUN Basics Tutorial/Launcher:OnJoinRandomFailed() was " +
+                "called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom");
+
+            // #Critical: we failed to join a random room, maybe none exists or they are all full. No worries, we create a new room.
+            PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
+        }
+
+        /*
+         * this is if I join a room
+         */
+        public override void OnJoinedRoom()
+        {
+            Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
+        }
         #endregion
     }
 }
