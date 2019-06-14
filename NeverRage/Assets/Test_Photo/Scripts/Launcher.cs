@@ -9,12 +9,14 @@ namespace Com.TriggerAppsProduction.NeverRage
 
     public class Launcher : MonoBehaviourPunCallbacks
     {
-
+        bool isConnecting;
 
         /*Testing My Network Application */
         #region Private Serializabe Fields
 
-        [Tooltip("The maximum number of players per room. When a room is full, it can't be joined by new players, and so new room will be created")]
+        [Tooltip("The maximum number of players per room. When a room is full, " +
+            "it can't be joined by new players," +
+            " and so new room will be created")]
         [SerializeField]
         private byte maxPlayersPerRoom = 4;
 
@@ -22,7 +24,12 @@ namespace Com.TriggerAppsProduction.NeverRage
 
         #region Private Field
 
-
+        [Tooltip("The Ui Panel to let the user enter name, connect and play")]
+        [SerializeField]
+        private GameObject controlPanel;
+        [Tooltip("The UI Label to inform the user that the connection is in progress")]
+        [SerializeField]
+        private GameObject progressLabel;
         /// <summary>
         /// this client's version number. Users are seperated from each other by gameversion/patches 
         /// </summary>
@@ -50,29 +57,12 @@ namespace Com.TriggerAppsProduction.NeverRage
 
         void Start()
         {
-          
+            #region Progress Button Enactive
+            progressLabel.SetActive(false);
+            controlPanel.SetActive(true);
+            #endregion
         }
-
-        #region MonoBehaviorPunCallbacks Callbacks
-        /*
-         * inform dev and client about networking to Master... connection status
-         */
-        public override void OnConnectedToMaster()
-        {
-            Debug.Log("Photon 2.0 : OnConnectedToMaster() was called");
-
-         
-        }
-
-        public override void OnDisconnected(DisconnectCause cause)
-        {
-            Debug.LogWarningFormat("PUN Basics Tutorial/Launcher: OnDisconnected() was called by PUN with reason {0}", cause);
-        }
-       
         #endregion
-
-        #endregion
-
 
         #region Public Methods
         /// <summary>
@@ -83,9 +73,19 @@ namespace Com.TriggerAppsProduction.NeverRage
         /// 
         public void Connect()
         {
+            isConnecting = true;
+
+            /*
+             * Buttons
+             */
+            #region ProgressButton Active
+            progressLabel.SetActive(true);
+            controlPanel.SetActive(false);
+            #endregion
             // we check if we are connected or not, we join if we are , else we initiate the connection to the server.
             if (PhotonNetwork.IsConnected)
             {
+
                 Debug.Log("Connected");
                 // #Critical we need at this point to attempt joining a Random Room. If it fails, we'll get notified in OnJoinRandomFailed() and we'll create one.
                 PhotonNetwork.JoinRandomRoom();
@@ -99,18 +99,45 @@ namespace Com.TriggerAppsProduction.NeverRage
                 // #Critical, we must first and foremost connect to Photon Online Server.
                 PhotonNetwork.GameVersion = gameVersion;
                 PhotonNetwork.ConnectUsingSettings();
-             
-
-                /* Callback for room connected
-                 */
-
             }
-          
          
         }
+        #region MonoBehaviorPunCallbacks Callbacks
+        /*
+         * inform dev and client about networking to Master... connection status
+         */
+        public override void OnConnectedToMaster()
+        {
+            Debug.Log("Photon 2.0 : OnConnectedToMaster() was called");
 
-        /* Join WPC section for response on room finding
-         * the script below is called after I stoped testing the game
+            /*
+             * When the game start - we run the Connect(); after connecting to the master-this override function OnConnectedToMaster();
+             *Will auto run, and in there We added the JoinRandomRoom(); and if this joinrandomroom fails, another override function
+             * OnJoinedRandomFailed(); which is below this section, will run automatically
+             */
+            if (isConnecting)
+            {
+                // #Critical: The first we try to do is to join a potential existing room. If there is, good, else, we'll be called back with OnJoinRandomFailed()
+                PhotonNetwork.JoinRandomRoom();
+            }
+            
+        }
+
+        public override void OnDisconnected(DisconnectCause cause)
+        {
+            #region Progress Button Enactive
+            progressLabel.SetActive(false);
+            controlPanel.SetActive(true);
+            #endregion
+
+            Debug.LogWarningFormat("PUN Basics Tutorial/Launcher: OnDisconnected() was called by PUN with reason {0}", cause);
+
+        }
+
+        #endregion
+
+        /* FindingRoom
+         * the script below will auto run, if the MasterServer function fails to execute PhotonNetwork.JoinRandomRoom();
          */
         public override void OnJoinRandomFailed(short returnCode, string message)
         {
@@ -119,14 +146,27 @@ namespace Com.TriggerAppsProduction.NeverRage
 
             // #Critical: we failed to join a random room, maybe none exists or they are all full. No worries, we create a new room.
             PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
+     
         }
 
         /*
-         * this is if I join a room
+         * the function below will execute after photon created a new room and join us in
          */
         public override void OnJoinedRoom()
         {
+
             Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
+            // #Critical: We only load if we are the first player, else we rely on `PhotonNetwork.AutomaticallySyncScene` to sync our instance scene.
+            if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
+            {
+                Debug.Log("We load the 'Room for 1' ");
+
+
+                // #Critical
+                // Load the Room Level.
+                PhotonNetwork.LoadLevel("Room for 1");
+            }
+
         }
         #endregion
     }
