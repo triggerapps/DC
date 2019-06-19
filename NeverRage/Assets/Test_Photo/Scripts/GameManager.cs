@@ -93,8 +93,16 @@ namespace Com.TriggerAppsProduction.NeverRage
         {
             PhotonNetwork.LeaveRoom();
         }
+      
+          public void QuitRoom()
+        {
+            Application.Quit();
+        }
+            
+        
+    
 
 
-        #endregion
-    }
+    #endregion
+}
 }

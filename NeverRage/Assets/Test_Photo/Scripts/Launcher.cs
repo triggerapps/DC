@@ -169,6 +169,12 @@ namespace Com.TriggerAppsProduction.NeverRage
 
         }
         #endregion
+        #region Quit Game
+        public void QuitRoom()
+        {
+            Application.Quit();
+        }
+        #endregion
     }
 }
     
