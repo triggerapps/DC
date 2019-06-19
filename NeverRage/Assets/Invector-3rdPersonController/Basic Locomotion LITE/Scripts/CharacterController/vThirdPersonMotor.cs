@@ -1,15 +1,20 @@
-﻿using UnityEngine;
+﻿//MonoBehaviourPun can be recognized here
+using Photon.Pun;
+using Photon.Realtime;
+
+using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Collections;
 using Invector;
 using UnityEngine.EventSystems;
 
-namespace Invector.CharacterController
-{
-    public abstract class vThirdPersonMotor : MonoBehaviour
+namespace Com.TriggerAppsProduction.NeverRage
+{//the above is a container for this script, the domain that own it
+    public abstract class vThirdPersonMotor : MonoBehaviourPun
     {
-        #region Variables        
+        #region Variables  
+
 
         #region Layers
         [Header("---! Layers !---")]
@@ -57,7 +62,7 @@ namespace Invector.CharacterController
 
         [Header("--- Movement Speed ---")]
         [Tooltip("Check to drive the character using RootMotion of the animation")]
-        public bool useRootMotion = false;      
+        public bool useRootMotion = false;
         [Tooltip("Add extra speed for the locomotion movement, keep this value at 0 if you want to use only root motion speed.")]
         public float freeWalkSpeed = 2.5f;
         [Tooltip("Add extra speed for the locomotion movement, keep this value at 0 if you want to use only root motion speed.")]
@@ -81,7 +86,7 @@ namespace Invector.CharacterController
         public float stepSmooth = 4f;
         [Tooltip("Max angle to walk")]
         [SerializeField]
-        protected float slopeLimit = 45f;       
+        protected float slopeLimit = 45f;
         [Tooltip("Apply extra gravity when the character is not grounded")]
         [SerializeField]
         protected float extraGravity = -10f;
@@ -126,7 +131,7 @@ namespace Invector.CharacterController
         [HideInInspector]
         public Quaternion freeRotation;
         [HideInInspector]
-        public bool keepDirection;        
+        public bool keepDirection;
 
         #endregion
 
@@ -156,6 +161,16 @@ namespace Invector.CharacterController
 
         #endregion
 
+        #endregion
+
+        #region  Photon animState
+        /*
+         *  this script is a photon to check for animation like jumping and apply a requirement...like you have to be running, to be able to jump
+         * void Update()
+        {
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        }
+        */
         #endregion
 
         public void Init()

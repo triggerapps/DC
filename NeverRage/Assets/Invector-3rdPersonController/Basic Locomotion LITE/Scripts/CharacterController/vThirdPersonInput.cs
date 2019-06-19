@@ -1,11 +1,15 @@
-﻿using UnityEngine;
+﻿
+//MonoBehaviourPun can be recognized here
+using Photon.Pun;
+using Photon.Realtime;
+using UnityEngine;
 #if UNITY_5_3_OR_NEWER
 using UnityEngine.SceneManagement;
 #endif
 
-namespace Invector.CharacterController
+namespace  Com.TriggerAppsProduction.NeverRage
 {
-    public class vThirdPersonInput : MonoBehaviour
+    public class vThirdPersonInput : MonoBehaviourPun
     {
         #region variables
 
@@ -39,6 +43,23 @@ namespace Invector.CharacterController
         protected virtual void Start()
         {
             CharacterInit();
+            #region Photon Check for CameraOwnership
+            //We want the camera for a character to only follow that character
+            vThirdPersonCamera _cameraWork = this.gameObject.GetComponent<vThirdPersonCamera>();
+
+            if (_cameraWork != null)
+            {
+                if (photonView.IsMine)
+                {
+                    _cameraWork.OnStartFollowing();
+                }
+            }
+            else
+            {
+                Debug.LogError("<Color=Red><a>Missing</a></Color> CameraWork Component on playerPrefab.", this);
+            }
+
+            #endregion
         }
 
         protected virtual void CharacterInit()
@@ -69,6 +90,13 @@ namespace Invector.CharacterController
 
         protected virtual void Update()
         {
+            #region Photon Check CharacterOwnership
+            //Detect which character is ours
+            if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
+            {
+                return;
+            }
+            #endregion
             cc.UpdateMotor();                   // call ThirdPersonMotor methods               
             cc.UpdateAnimator();                // call ThirdPersonAnimator methods		               
         }

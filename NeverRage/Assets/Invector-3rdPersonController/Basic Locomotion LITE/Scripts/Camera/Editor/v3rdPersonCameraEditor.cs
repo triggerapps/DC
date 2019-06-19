@@ -3,34 +3,36 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
-[CustomEditor (typeof(vThirdPersonCamera))]
-[CanEditMultipleObjects]
-public class v3rdPersonCameraEditor : Editor 
+namespace Com.TriggerAppsProduction.NeverRage
 {
-    GUISkin skin;
-    vThirdPersonCamera tpCamera;
-
-    public override void OnInspectorGUI()
+    [CanEditMultipleObjects]
+    public class v3rdPersonCameraEditor : Editor
     {
-        if (!skin) skin = Resources.Load("skin") as GUISkin;
-        GUI.skin = skin;                
+        GUISkin skin;
+        vThirdPersonCamera tpCamera;
 
-        GUILayout.BeginVertical("Basic Camera LITE by Invector", "window");
+        public override void OnInspectorGUI()
+        {
+            if (!skin) skin = Resources.Load("skin") as GUISkin;
+            GUI.skin = skin;
 
-        EditorGUILayout.Space();
-        EditorGUILayout.Space();
-        EditorGUILayout.Space();
-        EditorGUILayout.Space();
-        
-        EditorGUILayout.BeginVertical();
+            GUILayout.BeginVertical("Basic Camera LITE by Invector", "window");
 
-        base.OnInspectorGUI();
+            EditorGUILayout.Space();
+            EditorGUILayout.Space();
+            EditorGUILayout.Space();
+            EditorGUILayout.Space();
 
-        GUILayout.EndVertical();
-        EditorGUILayout.EndVertical();
+            EditorGUILayout.BeginVertical();
 
-        EditorGUILayout.Space();
-        EditorGUILayout.Space();
+            base.OnInspectorGUI();
+
+            GUILayout.EndVertical();
+            EditorGUILayout.EndVertical();
+
+            EditorGUILayout.Space();
+            EditorGUILayout.Space();
+        }
+
     }
-
 }

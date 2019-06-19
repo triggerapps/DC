@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace Invector.CharacterController
-{
+namespace Com.TriggerAppsProduction.NeverRage
+{//the above is a container for this script, the domain that own it
     public abstract class vThirdPersonAnimator : vThirdPersonMotor
     {
         public virtual void UpdateAnimator()
@@ -22,7 +22,7 @@ namespace Invector.CharacterController
                 animator.SetFloat("InputHorizontal", direction, 0.1f, Time.deltaTime);
             }
 
-            // fre movement get the input 0 to 1
+            // free movement get the input 0 to 1
             animator.SetFloat("InputVertical", speed, 0.1f, Time.deltaTime);
         }
 

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace Invector.CharacterController
+namespace Com.TriggerAppsProduction.NeverRage
 {
     public class vThirdPersonController : vThirdPersonAnimator
     {
