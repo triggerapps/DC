@@ -19,12 +19,12 @@ namespace Com.TriggerAppsProduction.NeverRage
         [Tooltip("The prefab to use for representing the player")]
         public GameObject playerPrefab;
 
-        [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
-        public static GameObject LocalPlayerInstance;
+     
 
         #region gameManager take damage instance initation
         //instance
         public static GameManager Instance;
+        //
         #endregion
 
 
@@ -33,45 +33,52 @@ namespace Com.TriggerAppsProduction.NeverRage
         #region Start Metods 
         void Start()
         {
-            #region gamemanager taking dmg instance
+           #region gamemanager taking dmg instance
             //instance
             Instance = this;
-
-          
-            //
             #endregion
+
+
+
+            #region Photon Pun: Instantiating Player 
+
+            //If the PLAYER GameObject is not Available
+
+
+            if (PlayerManager.LocalPlayerInstance == null)
+            {
+                Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
+                // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
+                PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 5f, 0f), Quaternion.identity, 0);
+            }
+            else
+            {
+                Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
+            }
 
             if (playerPrefab = null)
             {
                 Debug.LogError("<Color=Red><a>Missing</a></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'", this);
-            }
-            else
-            {
-                Debug.LogFormat("We are Instantiating LocalPlayer from {0}", Application.loadedLevelName);
-                // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate;
+                #region Photon Pun: Instantiate Player if PlayerManager Don't Have Access to that Version of the Player
 
-                if (PlayerManager.LocalPlayerInstance == null)
-                {
-                    Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
-                    // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-                    PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 5f, 0f), Quaternion.identity, 0);
-                }
-                else
-                {
-                    Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
-                }
+                //Else, Don't instantiate that clone of the player
+                #endregion
             }
+       
+    }
 
-            }
-#endregion
+        #endregion
+        //
+        #endregion
+
 
 
         #region Photon Callbacks
 
 
-            /// <summary>
-            /// Called when the local player left the room. We need to load the launcher scene.
-            /// </summary>
+        /// <summary>
+        /// Called when the local player left the room. We need to load the launcher scene.
+        /// </summary>
         public override void OnLeftRoom()
         {
             SceneManager.LoadScene(0);

@@ -13,14 +13,12 @@ namespace Com.TriggerAppsProduction.NeverRage
     public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
     {
         #region Private Fields For Loading Scenes
-        void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode loadingMode)
-        {
-            this.CalledOnLevelWasLoaded(scene.buildIndex);
-        }
-
-        [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
-        public static GameObject LocalPlayerInstance;
-
+#if UNITY_5_4_OR_NEWER
+void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode loadingMode)
+{
+    this.CalledOnLevelWasLoaded(scene.buildIndex);
+}
+#endif
         #region Shooting Script: Beams 01 : Boolean
 
         [Tooltip("The Beams GameObject to control")]
@@ -34,8 +32,13 @@ namespace Com.TriggerAppsProduction.NeverRage
         #endregion
 
         #region Public Fields
+
         [Tooltip("The current Health of our player")]
         public float Health = 1f;
+
+        [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
+        public static GameObject LocalPlayerInstance;
+
         #endregion
 
         #region MonoBehaviour Callbacks
@@ -123,13 +126,17 @@ namespace Com.TriggerAppsProduction.NeverRage
             #region Show other's Beams
             if (stream.IsWriting)
             {
-                // We own this player: send the others our data
+                // I own this player: send the others our hit data
                 stream.SendNext(IsFiring);
+                //I own this player: only take health from the other player.
+                stream.SendNext(Health);
             }
             else
             {
-                // Network player, receive data
+                // I own this damage: only hurt us
                 this.IsFiring = (bool)stream.ReceiveNext();
+                // I own this health: only subtract from mine Health
+                this.Health = (float)stream.ReceiveNext();
             }
             #endregion
 
@@ -152,8 +159,33 @@ namespace Com.TriggerAppsProduction.NeverRage
 
 
 
+     #region Custom ShootScript: Shooting INPUT
 
+        /// <summary>
+        /// Processes the inputs. Maintain a flag representing when the user is pressing Fire.
+        /// </summary>
 
+        void ProcessInputs()
+        {
+            if (Input.GetButtonDown("Fire1"))
+            {
+                if (!IsFiring)
+                {
+                    IsFiring = true;
+                }
+            }
+            if (Input.GetButtonUp("Fire1"))
+            {
+                if (IsFiring)
+                {
+                    IsFiring = false;
+                }
+            }
+        }
+
+        #endregion
+
+     #region Custom ShootScript: HIT Detection
         //SHOOTING DETECTION  
         //Detect Hits From Ray 
         //(Note: time frame is different; base on network speed, so time.deltime needs some research
@@ -194,34 +226,12 @@ namespace Com.TriggerAppsProduction.NeverRage
             #endregion
         }
 
+        #endregion
+
+
 
         #endregion
 
-        #region Custom ShootScript: Shooting INPUT
-
-        /// <summary>
-        /// Processes the inputs. Maintain a flag representing when the user is pressing Fire.
-        /// </summary>
-      
-        void ProcessInputs()
-        {
-            if (Input.GetButtonDown("Fire1"))
-            {
-                if (!IsFiring)
-                {
-                    IsFiring = true;
-                }
-            }
-            if (Input.GetButtonUp("Fire1"))
-            {
-                if (IsFiring)
-                {
-                    IsFiring = false;
-                }
-            }
-        }
-
-        #endregion
 
         #region Photon: Process Loading The Scenes and Player
         void OnLevelWasLoaded(int level)
