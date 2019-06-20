@@ -6,6 +6,10 @@ using Photon.Pun;
 
 namespace Com.TriggerAppsProduction.NeverRage
 {
+    /// <summary>
+    /// Handles Ui For Networking Menu Etc
+    /// For the game
+    /// </summary>
 
     public class Launcher : MonoBehaviourPunCallbacks
     {

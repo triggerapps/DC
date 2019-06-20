@@ -4,28 +4,18 @@ using System.Collections.Generic;
 using Invector;
 
 namespace Com.TriggerAppsProduction.NeverRage
-{
+{    
     public class vThirdPersonCamera : MonoBehaviour
     {
-        //the above is a container for this script, the domain that own it
-        private static vThirdPersonCamera _instance;
-        public static vThirdPersonCamera instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = GameObject.FindObjectOfType<vThirdPersonCamera>();
+        #region Script:  CameraWork
+        //Controls the Camera .....makes it smoothly follow the player
 
-                    //Tell unity not to destroy this object when loading a new scene!
-                    //DontDestroyOnLoad(_instance.gameObject);
-                }
+        #region NETWORK PHOTON PUN: Private Fields
 
-                return _instance;
-            }
-        }
+        #endregion
 
-        #region inspector properties    
+
+        #region 3RD PERSON CAMERA:Inspector properties    
 
         public Transform target;
         [Tooltip("Lerp speed between Camera States")]
@@ -45,8 +35,7 @@ namespace Com.TriggerAppsProduction.NeverRage
         public float yMaxLimit = 80f;
         #endregion
 
-        #region hide properties    
-
+        #region 3RD PERSON CAMERA : Properties to Hide
         [HideInInspector]
         public int indexList, indexLookPoint;
         [HideInInspector]
@@ -79,18 +68,26 @@ namespace Com.TriggerAppsProduction.NeverRage
 
         #endregion
 
-        #region Photon Component
-        [Tooltip("Set this as false if a component of a prefab being instanciated by Photon Network, and manually call OnStartFollowing() when and if needed.")]
-        [SerializeField]
-        private bool followOnStart = false;
 
-        #endregion
-
+        #region MonoBehaviour Callbacks
         void Start()
         {
 
         }
-        #region Photon Will Call the OnStartFollowing...it will then run a function to follow target
+
+        void Update()
+        {
+
+        }
+        #endregion
+
+
+        #region Photon PUN : Player Will Call Here...Camera Will then find and follow target
+
+        public void OnStartFollowing()
+        {
+            Init();
+        }
 
         public void Init()
         {
@@ -111,21 +108,39 @@ namespace Com.TriggerAppsProduction.NeverRage
             distance = defaultDistance;
             currentHeight = height;
         }
-        public void OnStartFollowing()
-        {
-            Init();
-        }
 
         #endregion
-        //
+       
+
+        #region 3rd Person Cam Instance
+        private static vThirdPersonCamera _instance;
+        public static vThirdPersonCamera instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = GameObject.FindObjectOfType<vThirdPersonCamera>();
+
+                    //Tell unity not to destroy this object when loading a new scene!
+                    //DontDestroyOnLoad(_instance.gameObject);
+                }
+
+                return _instance;
+            }
+        }
+        #endregion
+
+        #region 3RD PERSON CAMERA : Target the player if Active
         void FixedUpdate()
         {
             if (target == null || targetLookAt == null) return;
 
             CameraMovement();
         }
+        #endregion
 
-
+        #region 3RD PERSON CAMERA : Track Position and Follow Player
         /// <summary>
         /// Set the target for the camera
         /// </summary>
@@ -287,5 +302,7 @@ namespace Com.TriggerAppsProduction.NeverRage
 
             return value;
         }
+        #endregion
     }
+    #endregion
 }

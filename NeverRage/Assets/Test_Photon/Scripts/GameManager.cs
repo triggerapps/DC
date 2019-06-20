@@ -10,19 +10,37 @@ using Photon.Realtime;
 
 namespace Com.TriggerAppsProduction.NeverRage
 {//the above is a container for this script, the domain that own it
+    #region GameManager
     public class GameManager : MonoBehaviourPunCallbacks
     {
-        #region public Object Reference
+        #region Public Object Reference Field
+
+
         [Tooltip("The prefab to use for representing the player")]
         public GameObject playerPrefab;
 
         [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
         public static GameObject LocalPlayerInstance;
- #endregion
+
+        #region gameManager take damage instance initation
+        //instance
+        public static GameManager Instance;
+        #endregion
+
+
+        #endregion
 
         #region Start Metods 
         void Start()
         {
+            #region gamemanager taking dmg instance
+            //instance
+            Instance = this;
+
+          
+            //
+            #endregion
+
             if (playerPrefab = null)
             {
                 Debug.LogError("<Color=Red><a>Missing</a></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'", this);
@@ -31,10 +49,20 @@ namespace Com.TriggerAppsProduction.NeverRage
             {
                 Debug.LogFormat("We are Instantiating LocalPlayer from {0}", Application.loadedLevelName);
                 // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate;
-                PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 5f, 0f), Quaternion.identity, 0);
+
+                if (PlayerManager.LocalPlayerInstance == null)
+                {
+                    Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
+                    // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
+                    PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 5f, 0f), Quaternion.identity, 0);
+                }
+                else
+                {
+                    Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
+                }
             }
 
-        }
+            }
 #endregion
 
 
@@ -53,9 +81,6 @@ namespace Com.TriggerAppsProduction.NeverRage
         #endregion
 
         #region Private Methods
-
-        #region Photon Callbacks
-        #region Photon Callbacks
 
 
         public override void OnPlayerEnteredRoom(Player other)
@@ -87,12 +112,6 @@ namespace Com.TriggerAppsProduction.NeverRage
             }
         }
 
-
-        #endregion
-
-        #endregion
-
-
         /// <summary>
         /// Below you can load level based on how many players are available
         /// </summary>
@@ -111,7 +130,6 @@ namespace Com.TriggerAppsProduction.NeverRage
 
         #region Public Methods  Room 
 
-
         public void LeaveRoom()
         {
             PhotonNetwork.LeaveRoom();
@@ -128,4 +146,5 @@ namespace Com.TriggerAppsProduction.NeverRage
 
     #endregion
 }
+    #endregion
 }

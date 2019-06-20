@@ -1,17 +1,21 @@
-﻿
-//MonoBehaviourPun can be recognized here
-using Photon.Pun;
+﻿using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
-#if UNITY_5_3_OR_NEWER
-using UnityEngine.SceneManagement;
-#endif
 
-namespace  Com.TriggerAppsProduction.NeverRage
+namespace Com.TriggerAppsProduction.NeverRage
 {
+    #region PlayerAnimatorManager 
     public class vThirdPersonInput : MonoBehaviourPun
     {
-        #region variables
+        /// <summary>
+        /// This Scripts Handles Buttons Input From Player-It Reference the carController 
+        /// and 
+        /// Set it self as a target for the camera
+        /// This is the playerAnimatorManager
+        /// </summary>
+     
+
+        #region PlayerInput: Variables
 
         [Header("Default Inputs")]
         public string horizontalInput = "Horizontal";
@@ -21,7 +25,7 @@ namespace  Com.TriggerAppsProduction.NeverRage
         public KeyCode sprintInput = KeyCode.LeftShift;
 
         [Header("Camera Settings")]
-        public string rotateCameraXInput ="Mouse X";
+        public string rotateCameraXInput = "Mouse X";
         public string rotateCameraYInput = "Mouse Y";
 
         protected vThirdPersonCamera tpCamera;                // acess camera info        
@@ -40,10 +44,12 @@ namespace  Com.TriggerAppsProduction.NeverRage
 
         #endregion
 
+        #region  MonoBehaviour Callbacks
+        #region Start ()
         protected virtual void Start()
         {
             CharacterInit();
-            #region Photon Check for CameraOwnership
+            #region Photon Network Script: Check For Which Player Own This Version of Camera
             //We want the camera for a character to only follow that character
             vThirdPersonCamera _cameraWork = this.gameObject.GetComponent<vThirdPersonCamera>();
 
@@ -61,7 +67,33 @@ namespace  Com.TriggerAppsProduction.NeverRage
 
             #endregion
         }
+        #endregion
 
+        #region Update()
+        protected virtual void Update()
+        {
+            #region Photon Network Script: Check CharacterOwnership 02 During Local Test
+            //Detect which character is ours
+            if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
+            {
+                return;
+            }
+            #endregion
+            cc.UpdateMotor();                   // call ThirdPersonMotor methods               
+            cc.UpdateAnimator();                // call ThirdPersonAnimator methods	
+
+            #region Seperate Input as Clone of this Player are Spawned (isMine)
+            if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
+            {
+                return;
+            }
+            #endregion
+        }
+        #endregion
+        #endregion
+
+
+        #region //Check For CharacterController  && Make tpCamera Target This Object
         protected virtual void CharacterInit()
         {
             cc = GetComponent<vThirdPersonController>();
@@ -87,25 +119,13 @@ namespace  Com.TriggerAppsProduction.NeverRage
             cc.AirControl();
             CameraInput();
         }
-
-        protected virtual void Update()
-        {
-            #region Photon Check CharacterOwnership
-            //Detect which character is ours
-            if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
-            {
-                return;
-            }
-            #endregion
-            cc.UpdateMotor();                   // call ThirdPersonMotor methods               
-            cc.UpdateAnimator();                // call ThirdPersonAnimator methods		               
-        }
+        #endregion
 
         protected virtual void InputHandle()
         {
             ExitGameInput();
             CameraInput();
-
+            #region Check If Player Can Move (To then be able to use Movement Funtions)
             if (!cc.lockMovement)
             {
                 MoveCharacter();
@@ -113,12 +133,13 @@ namespace  Com.TriggerAppsProduction.NeverRage
                 StrafeInput();
                 JumpInput();
             }
+            #endregion 
         }
 
-        #region Basic Locomotion Inputs      
+        #region Basic Player (++ Reference to Sprint & Jump In Cc) Locomotion Inputs      
 
         protected virtual void MoveCharacter()
-        {            
+        {
             cc.input.x = Input.GetAxis(horizontalInput);
             cc.input.y = Input.GetAxis(verticallInput);
         }
@@ -133,7 +154,7 @@ namespace  Com.TriggerAppsProduction.NeverRage
         {
             if (Input.GetKeyDown(sprintInput))
                 cc.Sprint(true);
-            else if(Input.GetKeyUp(sprintInput))
+            else if (Input.GetKeyUp(sprintInput))
                 cc.Sprint(false);
         }
 
@@ -172,7 +193,7 @@ namespace  Com.TriggerAppsProduction.NeverRage
             if (!keepDirection)
                 cc.UpdateTargetDirection(tpCamera != null ? tpCamera.transform : null);
             // rotate the character with the camera while strafing        
-            RotateWithCamera(tpCamera != null ? tpCamera.transform : null);            
+            RotateWithCamera(tpCamera != null ? tpCamera.transform : null);
         }
 
         protected virtual void UpdateCameraStates()
@@ -188,17 +209,18 @@ namespace  Com.TriggerAppsProduction.NeverRage
                     tpCamera.SetMainTarget(this.transform);
                     tpCamera.Init();
                 }
-            }            
+            }
         }
 
         protected virtual void RotateWithCamera(Transform cameraTransform)
         {
             if (cc.isStrafing && !cc.lockMovement && !cc.lockMovement)
-            {                
-                cc.RotateWithAnotherTransform(cameraTransform);                
+            {
+                cc.RotateWithAnotherTransform(cameraTransform);
             }
         }
 
         #endregion     
     }
+    #endregion
 }

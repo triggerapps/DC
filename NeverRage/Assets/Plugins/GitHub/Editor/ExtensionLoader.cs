@@ -1,7 +1,7 @@
 using UnityEditor;
+using UnityEngine;
 using System.IO;
 using System;
-using UnityEngine;
 
 namespace GitHub.Unity
 {

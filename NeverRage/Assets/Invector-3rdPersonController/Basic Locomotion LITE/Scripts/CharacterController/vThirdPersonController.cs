@@ -2,7 +2,12 @@
 using System.Collections;
 
 namespace Com.TriggerAppsProduction.NeverRage
-{
+{ ///<summary>
+    //Controls The Player Body Physics...
+    //for movement running, and jumping and falling
+    //This is The charController Script -this is a setup
+    //TO BE REFERENCED BY THE PLAYER INPUT SCRIPT 
+  /// </summary>
     public class vThirdPersonController : vThirdPersonAnimator
     {
         protected virtual void Start()

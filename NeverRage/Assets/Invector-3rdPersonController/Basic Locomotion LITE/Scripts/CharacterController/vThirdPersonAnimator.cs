@@ -2,13 +2,18 @@
 using System.Collections;
 
 namespace Com.TriggerAppsProduction.NeverRage
-{//the above is a container for this script, the domain that own it
+{
+  
     public abstract class vThirdPersonAnimator : vThirdPersonMotor
-    {
+    {/// <summary>
+        ///This Script is Manage the Speed/Movement/States/Animation of the Player
+        ///the receiving input part is done by the thirdpersonInput
+        /// </summary>
+
         public virtual void UpdateAnimator()
         {
             if (animator == null || !animator.enabled) return;
-
+            #region Strafing animation boolean
             animator.SetBool("IsStrafing", isStrafing);
             animator.SetBool("IsGrounded", isGrounded);
             animator.SetFloat("GroundDistance", groundDistance);
@@ -24,20 +29,23 @@ namespace Com.TriggerAppsProduction.NeverRage
 
             // free movement get the input 0 to 1
             animator.SetFloat("InputVertical", speed, 0.1f, Time.deltaTime);
+            #endregion
         }
 
         public void OnAnimatorMove()
         {
-            // we implement this function to override the default root motion.
-            // this allows us to modify the positional speed before it's applied.
+            // Check for Player State (in_air or grounded)/ Determine how fast player can move
             if (isGrounded)
             {
+                #region Check If Player Is On A Surface: Player Motion Calculation
                 transform.rotation = animator.rootRotation;
 
                 var speedDir = Mathf.Abs(direction) + Mathf.Abs(speed);
                 speedDir = Mathf.Clamp(speedDir, 0, 1);
                 var strafeSpeed = (isSprinting ? 1.5f : 1f) * Mathf.Clamp(speedDir, 0f, 1f);
-                
+                #endregion
+
+                #region Strafing Acceleration
                 // strafe extra speed
                 if (isStrafing)
                 {
@@ -50,7 +58,7 @@ namespace Com.TriggerAppsProduction.NeverRage
                 }
                 else if (!isStrafing)
                 {
-                    // free extra speed                
+                    // free movement extra speed                
                     if (speed <= 0.5f)
                         ControlSpeed(freeWalkSpeed);
                     else if (speed > 0.5 && speed <= 1f)
@@ -58,6 +66,7 @@ namespace Com.TriggerAppsProduction.NeverRage
                     else
                         ControlSpeed(freeSprintSpeed);
                 }
+                #endregion
             }
         }
     }
