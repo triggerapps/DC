@@ -11,6 +11,15 @@ using UnityEngine.EventSystems;
 
 namespace Com.TriggerAppsProduction.NeverRage
 {//the above is a container for this script, the domain that own it
+    /*
+     This Script is the (1st tier) script for implementing physics and verifying player movement base 
+     on the states they are in, in mid air, on ground...ect. This script however, is private
+     Its an Editor, to make whats in here visible, another script...vThirdPersonController is possible.
+     The Controller has this script as a backend, and using public virtual void, it can expose some functions 
+     to be referenced by other scripts....dont mess with (1st tier) because it will effect the controller and 
+     any script that references the controller...this is a 
+     Library
+     */
     public abstract class vThirdPersonMotor : MonoBehaviourPun
     {
         #region Variables  
@@ -163,16 +172,7 @@ namespace Com.TriggerAppsProduction.NeverRage
 
         #endregion
 
-        #region  Photon animState
-        /*
-         *  this script is a photon to check for animation like jumping and apply a requirement...like you have to be running, to be able to jump
-         * void Update()
-        {
-            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        }
-        */
-        #endregion
-
+        #region Check Animotor and Apply Physics
         public void Init()
         {
             // this method is called on the Start of the ThirdPersonController
@@ -208,7 +208,10 @@ namespace Com.TriggerAppsProduction.NeverRage
             _capsuleCollider = GetComponent<CapsuleCollider>();
         }
 
-        public virtual void UpdateMotor()
+        #endregion
+
+
+        public  void UpdateMotor()
         {
             CheckGround();
             ControlJumpBehaviour();

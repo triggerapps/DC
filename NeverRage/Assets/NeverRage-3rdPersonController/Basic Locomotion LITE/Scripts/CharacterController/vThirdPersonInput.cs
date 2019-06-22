@@ -1,6 +1,10 @@
-﻿using Photon.Pun;
-using Photon.Realtime;
+﻿#region photon
+using Photon.Pun;
+#endregion
 using UnityEngine;
+using System.Collections;
+using UnityEngine.EventSystems;
+
 
 namespace Com.TriggerAppsProduction.NeverRage
 {
@@ -13,7 +17,6 @@ namespace Com.TriggerAppsProduction.NeverRage
         /// Set it self as a target for the camera
         /// This is the playerAnimatorManager
         /// </summary>
-     
 
         #region PlayerInput: Variables
 
@@ -49,23 +52,7 @@ namespace Com.TriggerAppsProduction.NeverRage
         protected virtual void Start()
         {
             CharacterInit();
-            #region Photon Network Script: Check For Which Player Own This Version of Camera
-            //We want the camera for a character to only follow that character
-            vThirdPersonCamera _cameraWork = this.gameObject.GetComponent<vThirdPersonCamera>();
-
-            if (_cameraWork != null)
-            {
-                if (photonView.IsMine)
-                {
-                    _cameraWork.OnStartFollowing();
-                }
-            }
-            else
-            {
-                Debug.LogError("<Color=Red><a>Missing</a></Color> CameraWork Component on playerPrefab.", this);
-            }
-
-            #endregion
+        
         }
         #endregion
 
@@ -82,50 +69,58 @@ namespace Com.TriggerAppsProduction.NeverRage
             cc.UpdateMotor();                   // call ThirdPersonMotor methods               
             cc.UpdateAnimator();                // call ThirdPersonAnimator methods	
 
-            #region Seperate Input as Clone of this Player are Spawned (isMine)
-            if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
-            {
-                return;
-            }
-            #endregion
         }
         #endregion
         #endregion
 
 
-        #region //Check For CharacterController  && Make tpCamera Target This Object
-        protected virtual void CharacterInit()
+        #region //Check For CharacterController  ALSO Make tpCamera Target the object with this script
+        public virtual void CharacterInit()
         {
+            #region Access to the Character Controller and Animator
             cc = GetComponent<vThirdPersonController>();
             if (cc != null)
                 cc.Init();
+            #endregion
 
             tpCamera = FindObjectOfType<vThirdPersonCamera>();
             if (tpCamera) tpCamera.SetMainTarget(this.transform);
 
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
+            //Locks Cursor when clicks
+            /*  Cursor.visible = false;
+              Cursor.lockState = CursorLockMode.Locked;
+              */
         }
 
-        protected virtual void LateUpdate()
+        public void use_UpdateMotor()
+        {
+            LateUpdate();
+            FixedUpdate();
+            InputHandle();
+            CharacterInit();
+        }
+
+        public virtual void LateUpdate()
         {
             if (cc == null) return;             // returns if didn't find the controller		    
             InputHandle();                      // update input methods
             UpdateCameraStates();               // update camera states
         }
 
-        protected virtual void FixedUpdate()
+        public virtual void FixedUpdate()
         {
             cc.AirControl();
             CameraInput();
         }
         #endregion
 
-        protected virtual void InputHandle()
+        public virtual void InputHandle()
         {
-            ExitGameInput();
+            
             CameraInput();
-            #region Check If Player Can Move (To then be able to use Movement Funtions)
+            Cursor_Controller();
+
+            #region Check If Player Can Move (Then Movement Funtions)
             if (!cc.lockMovement)
             {
                 MoveCharacter();
@@ -164,7 +159,8 @@ namespace Com.TriggerAppsProduction.NeverRage
                 cc.Jump();
         }
 
-        protected virtual void ExitGameInput()
+        //Cursor (TOGGLE ON AND OFF)
+        protected virtual void Cursor_Controller()
         {
             // just a example to quit the application 
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -172,7 +168,10 @@ namespace Com.TriggerAppsProduction.NeverRage
                 if (!Cursor.visible)
                     Cursor.visible = true;
                 else
-                    Application.Quit();
+                if(Cursor.visible == true)
+                {
+                    Cursor.visible = false;
+                }
             }
         }
 

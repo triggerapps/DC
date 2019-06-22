@@ -72,6 +72,10 @@ void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneMan
 
         void Start()
         {
+#if UNITY_5_4_OR_NEWER
+// Unity 5.4 has a new scene management. register a method to call CalledOnLevelWasLoaded.
+UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
+#endif
             #region Photon: Register A Completion of A Loaded Scene
             // Unity 5.4 has a new scene management. 
             //register a method to call CalledOnLevelWasLoaded.
@@ -94,6 +98,10 @@ void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneMan
             }
             #endregion
         }
+
+
+
+
         void Update()
         {
 
@@ -115,6 +123,9 @@ void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneMan
                 GameManager.Instance.LeaveRoom();
             }
             #endregion
+
+            DontDestroyOnLoad(this.gameObject);
+
         }
 
         #region IPunObservable implementation
@@ -141,7 +152,7 @@ void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneMan
             #endregion
 
             #region Syn Health, Seperate my health from others
-            if(stream.IsWriting)
+            if (stream.IsWriting)
             {
                 stream.SendNext(IsFiring);
                 stream.SendNext(Health);
@@ -159,7 +170,7 @@ void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneMan
 
 
 
-     #region Custom ShootScript: Shooting INPUT
+        #region Custom ShootScript: Shooting INPUT
 
         /// <summary>
         /// Processes the inputs. Maintain a flag representing when the user is pressing Fire.
@@ -185,7 +196,7 @@ void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneMan
 
         #endregion
 
-     #region Custom ShootScript: HIT Detection
+        #region Custom ShootScript: HIT Detection
         //SHOOTING DETECTION  
         //Detect Hits From Ray 
         //(Note: time frame is different; base on network speed, so time.deltime needs some research
@@ -229,35 +240,36 @@ void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneMan
         #endregion
 
 
-
-        #endregion
-
-
-        #region Photon: Process Loading The Scenes and Player
+#if !UNITY_5_4_OR_NEWER
+        /// <summary>See CalledOnLevelWasLoaded. Outdated in Unity 5.4.</summary>
         void OnLevelWasLoaded(int level)
         {
             this.CalledOnLevelWasLoaded(level);
         }
+#endif
+
 
         void CalledOnLevelWasLoaded(int level)
         {
-            // check if we are outside the Arena and if it's the case, 
-            //spawn around the center of the arena in a safe zone
+            // check if we are outside the Arena and if it's the case, spawn around the center of the arena in a safe zone
             if (!Physics.Raycast(transform.position, -Vector3.up, 5f))
             {
                 transform.position = new Vector3(0f, 5f, 0f);
             }
         }
 
-        public override void OnDisable()
-        {
-            // Always call the base to remove callbacks
-            base.OnDisable();
-            UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
-        }
+
+
+#if UNITY_5_4_OR_NEWER
+public override void OnDisable()
+{
+    // Always call the base to remove callbacks
+    base.OnDisable ();
+    UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
+}
+#endif
+
         #endregion
-
-
+        #endregion
     }
-    #endregion
 }

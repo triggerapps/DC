@@ -1,0 +1,5 @@
+-Use google often
+
+-Resources AND PhotonNetworkPlayer 
+are scripted in the project and the name must be the same
+as it is in the scripts.

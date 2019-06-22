@@ -2,20 +2,22 @@
 using System.Collections;
 
 namespace Com.TriggerAppsProduction.NeverRage
-{ ///<summary>
-    //Controls The Player Body Physics...
-    //for movement running, and jumping and falling
-    //This is The charController Script -this is a setup
-    //TO BE REFERENCED BY THE PLAYER INPUT SCRIPT 
-  /// </summary>
+{ /*
+    This Script is a second level script, the base script (1st level) is vThirdPersonMotor
+    This Script is is a MotorManager type, it gets functions from the motor and 
+    Present them in an accessable format to public classes, all the presented methods are virtual because
+    they are boxes that contain functions from the PlayerMotor script
+    */
     public class vThirdPersonController : vThirdPersonAnimator
     {
         protected virtual void Start()
         {
-#if !UNITY_EDITOR
-                Cursor.visible = false;
-#endif
+
         }
+
+        //cc.Init() is going to be called from this script using PlayerInput but, its fine
+        //if cc.Init() is not here...its in the vThirdPersonMotor Script...and that is the 1st priority script
+        //so its going to get read withno problem.
 
         public virtual void Sprint(bool value)
         {                                   

@@ -145,6 +145,7 @@ namespace Com.TriggerAppsProduction.NeverRage
         /// Set the target for the camera
         /// </summary>
         /// <param name="New cursorObject"></param>
+
         public void SetTarget(Transform newTarget)
         {
             currentTarget = newTarget ? newTarget : target;

@@ -11,6 +11,7 @@ using Photon.Realtime;
 namespace Com.TriggerAppsProduction.NeverRage
 {//the above is a container for this script, the domain that own it
     #region GameManager
+
     public class GameManager : MonoBehaviourPunCallbacks
     {
         #region Public Object Reference Field
@@ -41,39 +42,40 @@ namespace Com.TriggerAppsProduction.NeverRage
 
 
             #region Photon Pun: Instantiating Player 
-
-            //If the PLAYER GameObject is not Available
-
-
-            if (PlayerManager.LocalPlayerInstance == null)
+            if (playerPrefab == null)
             {
-                Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
-                // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-                PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 5f, 0f), Quaternion.identity, 0);
+                Debug.LogError("<Color=Red><a>Missing</a></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'", this);
             }
             else
             {
-                Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
+                if (PlayerManager.LocalPlayerInstance == null)
+                {
+                    Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
+                    // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
+                    PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 5f, 0f), Quaternion.identity, 0);
+                }
+                else
+                {
+                    Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
+                }
             }
 
-            if (playerPrefab = null)
-            {
-                Debug.LogError("<Color=Red><a>Missing</a></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'", this);
-                #region Photon Pun: Instantiate Player if PlayerManager Don't Have Access to that Version of the Player
-
-                //Else, Don't instantiate that clone of the player
-                #endregion
-            }
-       
-    }
+        }
 
         #endregion
         //
         #endregion
 
+     
+
 
 
         #region Photon Callbacks
+        void Update()
+        {
+            //Destory On Load
+ 
+        }
 
 
         /// <summary>
@@ -146,12 +148,9 @@ namespace Com.TriggerAppsProduction.NeverRage
         {
             Application.Quit();
         }
-            
-        
-    
 
 
-    #endregion
-}
+        #endregion
+    }
     #endregion
 }
