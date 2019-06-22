@@ -1,0 +1,3 @@
+This is the Master Server Connection Script
+This is where player login
+Connect to the Master Server
