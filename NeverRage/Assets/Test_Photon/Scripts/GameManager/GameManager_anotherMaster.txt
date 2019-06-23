@@ -1,4 +1,0 @@
-GameManager is a masterSrerver Connecter as well
-It will check to see if we are in main menue, and it won't load next level
-If GameManager is the only connecter, it will then check with appropriate level
-to load.
