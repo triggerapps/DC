@@ -45,7 +45,7 @@ namespace Com.TriggerApps.NeverRage
         /// </summary>
         void Start()
         {
-            Connect();
+           
         }
 
         public override void OnConnectedToMaster()
@@ -61,11 +61,13 @@ namespace Com.TriggerApps.NeverRage
             Debug.LogWarningFormat("PUN Basics Tutorial/Launcher: OnDisconnected() was called by PUN with reason {0}", cause);
         }
 
+
+
+
+
         public override void OnJoinRandomFailed(short returnCode, string message)
         {
             Debug.Log("PUN Basics Tutorial/Launcher:OnJoinRandomFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom");
-
-
             // #Critical: we failed to join a random room, maybe none exists or they are all full. No worries, we create a new room.
             PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
         }
