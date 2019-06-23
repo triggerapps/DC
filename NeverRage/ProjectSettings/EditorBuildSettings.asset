@@ -4,4 +4,14 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/_NeverRage_GameFolder/N_Scene/Launcher.unity
+    guid: db33634c1de773649bebf646df9d1652
+  - enabled: 1
+    path: Assets/_NeverRage_GameFolder/N_Scene/Room for 1.unity
+    guid: 7ee8865b21f66054eb975032dfc3ed4e
+  - enabled: 1
+    path: Assets/_NeverRage_GameFolder/N_Scene/Room for 2.unity
+    guid: f921d990faf678e438836fad65beb00a
+  m_configObjects: {}
