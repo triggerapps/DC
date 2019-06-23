@@ -459,12 +459,12 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1001401707}
-        m_MethodName: 
-        m_Mode: 1
+      - m_Target: {fileID: 1001401709}
+        m_MethodName: SetPlayerName
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -711,16 +711,16 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 14
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 10
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: Searching...
 --- !u!222 &1237293427
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1138,6 +1138,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c58314018d2495240827ff68c858bd5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxPlayersPerRoom: 4
+  controlPanel: {fileID: 2124182712}
+  progressLabel: {fileID: 1237293424}
 --- !u!4 &1760312973
 Transform:
   m_ObjectHideFlags: 0
