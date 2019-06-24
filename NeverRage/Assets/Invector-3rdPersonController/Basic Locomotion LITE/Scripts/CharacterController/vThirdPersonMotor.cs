@@ -158,12 +158,14 @@ namespace Invector.CharacterController
 
         #endregion
 
+        #region Start() -INSTEAD, APPLY PHYSIC TO thirdPersonCOntroller
+        // this method is called on the Start of the ThirdPersonController
+        //this method collects all physics component and applies proper Physics to it
         public void Init()
         {
-            // this method is called on the Start of the ThirdPersonController
 
             // access components
-            animator = GetComponent<Animator>();
+           animator = GetComponent<Animator>();
 
             // slides the character through walls and edges
             frictionPhysics = new PhysicMaterial();
@@ -192,16 +194,22 @@ namespace Invector.CharacterController
             // capsule collider info
             _capsuleCollider = GetComponent<CapsuleCollider>();
         }
+        #endregion
 
+        #region Update() - INSTEAD, Apply all movement Methods
+        //This Controls The Player Input 
+        //WithOut this the player is In a Jump Loop and Wont move
         public virtual void UpdateMotor()
         {
             CheckGround();
             ControlJumpBehaviour();
             ControlLocomotion();
         }
+        #endregion
 
         #region Locomotion 
 
+        //bool, to recognize state, below this bool is the controls
         protected bool freeLocomotionConditions
         {
             get
@@ -211,6 +219,8 @@ namespace Invector.CharacterController
             }
         }
 
+        #region CONTROLL SPRINT AND WALK STATES
+        //Controlls the Freemovement and Strafe States
         void ControlLocomotion()
         {
             if (freeLocomotionConditions)
@@ -218,7 +228,9 @@ namespace Invector.CharacterController
             else
                 StrafeMovement();   // move forward, backwards, strafe left and right
         }
+        #endregion
 
+        #region Walk & Sprint States
         void StrafeMovement()
         {
             var _speed = Mathf.Clamp(input.y, -1f, 1f);
@@ -253,6 +265,7 @@ namespace Invector.CharacterController
                 }               
             }
         }
+        //Velocity for states
         protected void ControlSpeed(float velocity)
         {
             if (Time.deltaTime == 0) return;
@@ -283,6 +296,7 @@ namespace Invector.CharacterController
                 }
             }
         }
+        #endregion
 
         #endregion
 

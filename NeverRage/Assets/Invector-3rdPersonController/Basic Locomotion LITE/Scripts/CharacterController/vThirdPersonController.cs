@@ -8,6 +8,7 @@ namespace Invector.CharacterController
         protected virtual void Start()
         {
 #if !UNITY_EDITOR
+            //Cursor
                 Cursor.visible = false;
 #endif
         }

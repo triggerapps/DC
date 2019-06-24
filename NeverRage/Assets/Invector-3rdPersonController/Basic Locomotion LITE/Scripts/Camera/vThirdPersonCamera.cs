@@ -78,6 +78,9 @@ public class vThirdPersonCamera : MonoBehaviour
 
     void Start()
     {
+        //this isn't the connecter that make the cam follow the player
+        //This only update the camera state...to make sure it has a target and follows
+        //this is called in the thirdpersonInput as well, disable 
         Init();
     }
 
