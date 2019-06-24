@@ -1,0 +1,8 @@
+Trying to  Keep Track of the Player 
+So I dont Instaite more than one
+So, I also know which one own a controller and which one needs 1
+
+In Manager
+and Playerinput
+
+-I am about to use the other youtube tutorial
