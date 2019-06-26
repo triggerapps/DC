@@ -57,7 +57,7 @@ namespace Invector.CharacterController
 
         [Header("--- Movement Speed ---")]
         [Tooltip("Check to drive the character using RootMotion of the animation")]
-        public bool useRootMotion = false;      
+        public bool useRootMotion = false;
         [Tooltip("Add extra speed for the locomotion movement, keep this value at 0 if you want to use only root motion speed.")]
         public float freeWalkSpeed = 2.5f;
         [Tooltip("Add extra speed for the locomotion movement, keep this value at 0 if you want to use only root motion speed.")]
@@ -81,7 +81,7 @@ namespace Invector.CharacterController
         public float stepSmooth = 4f;
         [Tooltip("Max angle to walk")]
         [SerializeField]
-        protected float slopeLimit = 45f;       
+        protected float slopeLimit = 45f;
         [Tooltip("Apply extra gravity when the character is not grounded")]
         [SerializeField]
         protected float extraGravity = -10f;
@@ -126,7 +126,7 @@ namespace Invector.CharacterController
         [HideInInspector]
         public Quaternion freeRotation;
         [HideInInspector]
-        public bool keepDirection;        
+        public bool keepDirection;
 
         #endregion
 
@@ -158,14 +158,12 @@ namespace Invector.CharacterController
 
         #endregion
 
-        #region Start() -INSTEAD, APPLY PHYSIC TO thirdPersonCOntroller
-        // this method is called on the Start of the ThirdPersonController
-        //this method collects all physics component and applies proper Physics to it
         public void Init()
         {
+            // this method is called on the Start of the ThirdPersonController
 
             // access components
-           animator = GetComponent<Animator>();
+            animator = GetComponent<Animator>();
 
             // slides the character through walls and edges
             frictionPhysics = new PhysicMaterial();
@@ -194,22 +192,16 @@ namespace Invector.CharacterController
             // capsule collider info
             _capsuleCollider = GetComponent<CapsuleCollider>();
         }
-        #endregion
 
-        #region Update() - INSTEAD, Apply all movement Methods
-        //This Controls The Player Input 
-        //WithOut this the player is In a Jump Loop and Wont move
         public virtual void UpdateMotor()
         {
             CheckGround();
             ControlJumpBehaviour();
             ControlLocomotion();
         }
-        #endregion
 
         #region Locomotion 
 
-        //bool, to recognize state, below this bool is the controls
         protected bool freeLocomotionConditions
         {
             get
@@ -219,8 +211,6 @@ namespace Invector.CharacterController
             }
         }
 
-        #region CONTROLL SPRINT AND WALK STATES
-        //Controlls the Freemovement and Strafe States
         void ControlLocomotion()
         {
             if (freeLocomotionConditions)
@@ -228,9 +218,7 @@ namespace Invector.CharacterController
             else
                 StrafeMovement();   // move forward, backwards, strafe left and right
         }
-        #endregion
 
-        #region Walk & Sprint States
         void StrafeMovement()
         {
             var _speed = Mathf.Clamp(input.y, -1f, 1f);
@@ -244,11 +232,11 @@ namespace Invector.CharacterController
         public virtual void FreeMovement()
         {
             // set speed to both vertical and horizontal inputs
-            speed = Mathf.Abs(input.x) + Mathf.Abs(input.y);            
+            speed = Mathf.Abs(input.x) + Mathf.Abs(input.y);
             speed = Mathf.Clamp(speed, 0, 1f);
             // add 0.5f on sprint to change the animation on animator
             if (isSprinting) speed += 0.5f;
-                        
+
             if (input != Vector2.zero && targetDirection.magnitude > 0.1f)
             {
                 Vector3 lookDirection = targetDirection.normalized;
@@ -262,10 +250,9 @@ namespace Invector.CharacterController
                     if (diferenceRotation < 0 || diferenceRotation > 0) eulerY = freeRotation.eulerAngles.y;
                     var euler = new Vector3(transform.eulerAngles.x, eulerY, transform.eulerAngles.z);
                     transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(euler), freeRotationSpeed * Time.deltaTime);
-                }               
+                }
             }
         }
-        //Velocity for states
         protected void ControlSpeed(float velocity)
         {
             if (Time.deltaTime == 0) return;
@@ -296,7 +283,6 @@ namespace Invector.CharacterController
                 }
             }
         }
-        #endregion
 
         #endregion
 
@@ -326,7 +312,7 @@ namespace Invector.CharacterController
             var velY = transform.forward * jumpForward * speed;
             velY.y = _rigidbody.velocity.y;
             var velX = transform.right * jumpForward * direction;
-            velX.x = _rigidbody.velocity.x;            
+            velX.x = _rigidbody.velocity.x;
 
             if (jumpAirControl)
             {
@@ -438,7 +424,7 @@ namespace Invector.CharacterController
         {
             var groundAngle = Vector3.Angle(groundHit.normal, Vector3.up);
             return groundAngle;
-        }      
+        }
 
         void Sliding()
         {

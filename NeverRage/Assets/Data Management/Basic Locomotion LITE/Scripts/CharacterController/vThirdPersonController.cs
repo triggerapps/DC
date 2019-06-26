@@ -8,14 +8,13 @@ namespace Invector.CharacterController
         protected virtual void Start()
         {
 #if !UNITY_EDITOR
-            //Cursor
-                Cursor.visible = false;
+            Cursor.visible = false;
 #endif
         }
 
         public virtual void Sprint(bool value)
-        {                                   
-            isSprinting = value;            
+        {
+            isSprinting = value;
         }
 
         public virtual void Strafe()
@@ -31,7 +30,7 @@ namespace Invector.CharacterController
             // return if jumpCondigions is false
             if (!jumpConditions) return;
             // trigger jump behaviour
-            jumpCounter = jumpTimer;            
+            jumpCounter = jumpTimer;
             isJumping = true;
             // trigger jump animations            
             if (_rigidbody.velocity.magnitude < 1)

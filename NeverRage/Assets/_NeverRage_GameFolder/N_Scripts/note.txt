@@ -16,3 +16,7 @@ I will most likely remove the controlls from the player input script
 The photon way: I will take the cameWork method, by calling the camera controller 
 methods from in PlayerManager instead of Input...then I will set the instance to 
 PlayerManager, and then check that instance on GameManager
+
+-----------Right Now
+I can instantiate the players,
+But the controller is moving both at the same time.

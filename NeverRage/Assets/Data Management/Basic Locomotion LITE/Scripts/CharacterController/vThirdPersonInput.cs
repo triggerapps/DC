@@ -1,11 +1,14 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using Photon.Realtime;
+
+using UnityEngine;
 #if UNITY_5_3_OR_NEWER
 using UnityEngine.SceneManagement;
 #endif
-
+//Right now 2 players Freezes the game
 namespace Invector.CharacterController
 {
-    public class vThirdPersonInput : MonoBehaviour
+    public class vThirdPersonInput : MonoBehaviourPun
     {
         #region variables
 
@@ -17,7 +20,7 @@ namespace Invector.CharacterController
         public KeyCode sprintInput = KeyCode.LeftShift;
 
         [Header("Camera Settings")]
-        public string rotateCameraXInput ="Mouse X";
+        public string rotateCameraXInput = "Mouse X";
         public string rotateCameraYInput = "Mouse Y";
 
         protected vThirdPersonCamera tpCamera;                // acess camera info        
@@ -36,76 +39,75 @@ namespace Invector.CharacterController
 
         #endregion
 
-        #region Start()
+        [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
+        public static GameObject LocalPlayerInstance;
+        private bool Turn_On = false;
+
+        protected virtual void Awake()
+        {
+            // #Important
+            // used in GameManager.cs: we keep track of the localPlayer instance to prevent instantiation when levels are synchronized
+      
+
+                // #Critical
+                // we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
+                DontDestroyOnLoad(this.gameObject);
+       
+           
+           
+        }
+
+
+
         protected virtual void Start()
         {
-         
-            //without it the scene will freeze midair, this calls the Init() for cc, which is in the VthirdPersonMotor
-            moveCharacter();
-            //this controls the Camera and connect it to follow player gameObject
-            OnStartFollowing();
-
+            if (photonView.IsMine)
+            {
+                CharacterInit();
+            }
         }
-        //
-        #region Movements Methods
-        #region CharacterMovement Method
-        protected virtual void moveCharacter()
+
+        protected virtual void CharacterInit()
         {
             cc = GetComponent<vThirdPersonController>();
             if (cc != null)
                 cc.Init();
 
-
-
-            //this is the only connecter for the camera to follow the player
-            //without it the camera will be in the scene... but not behind the player
+            tpCamera = FindObjectOfType<vThirdPersonCamera>();
+            if (tpCamera) tpCamera.SetMainTarget(this.transform);
 
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
-        #region CameraMovement Method
-        protected virtual void OnStartFollowing()
+
+        protected virtual void LateUpdate()
         {
-            tpCamera = FindObjectOfType<vThirdPersonCamera>();
-            if (tpCamera) tpCamera.SetMainTarget(this.transform);
+            
+                if (cc == null) return;             // returns if didn't find the controller		    
+                InputHandle();                      // update input methods
+                UpdateCameraStates();               // update camera states
+            
         }
-        #endregion
-        #endregion
-        //
 
-        #endregion
-        //
-        #endregion
-
-        #region Update()
+        protected virtual void FixedUpdate()
+        {
+         
+                cc.AirControl();
+                CameraInput();
+            
+        }
 
         protected virtual void Update()
         {
-
-
-            //call in Update or Late Update only, doesn't work in start, controls the camera
-              InputHandle();                      
-
-            //DIRECT: call ThirdPersonMotor methods; this give direct access to vthirdpersonMotor, and it does the Update      
-             cc.UpdateMotor();
-
-            //DIRECT: call ThirdPersonAnimator methods; this give direct access to vthirdpersonMotor, and it does the Update
-             cc.UpdateAnimator();  
-       
-            //
+            
+                cc.UpdateMotor();                   // call ThirdPersonMotor methods               
+                cc.UpdateAnimator();                // call ThirdPersonAnimator methods		
+            
         }
 
-        #endregion
-
-        //METHOD to call
-
-        #region  InputHandle Method     
-
-        //Basic' 'Locomotion Inputs' Region Controller which is below
         protected virtual void InputHandle()
         {
             ExitGameInput();
-            //this can only be called here
             CameraInput();
 
             if (!cc.lockMovement)
@@ -116,9 +118,11 @@ namespace Invector.CharacterController
                 JumpInput();
             }
         }
-        #region Locomotion Inputs (needed for camera to work)
+
+        #region Basic Locomotion Inputs      
+
         protected virtual void MoveCharacter()
-        {            
+        {
             cc.input.x = Input.GetAxis(horizontalInput);
             cc.input.y = Input.GetAxis(verticallInput);
         }
@@ -133,7 +137,7 @@ namespace Invector.CharacterController
         {
             if (Input.GetKeyDown(sprintInput))
                 cc.Sprint(true);
-            else if(Input.GetKeyUp(sprintInput))
+            else if (Input.GetKeyUp(sprintInput))
                 cc.Sprint(false);
         }
 
@@ -142,11 +146,22 @@ namespace Invector.CharacterController
             if (Input.GetKeyDown(jumpInput))
                 cc.Jump();
         }
+
+        protected virtual void ExitGameInput()
+        {
+            // just a example to quit the application 
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                if (!Cursor.visible)
+                    Cursor.visible = true;
+                else
+                    Application.Quit();
+            }
+        }
+
         #endregion
-        //
 
-
-        #region Camera Input Methods
+        #region Camera Methods
 
         protected virtual void CameraInput()
         {
@@ -164,6 +179,21 @@ namespace Invector.CharacterController
             RotateWithCamera(tpCamera != null ? tpCamera.transform : null);
         }
 
+        protected virtual void UpdateCameraStates()
+        {
+            // CAMERA STATE - you can change the CameraState here, the bool means if you want lerp of not, make sure to use the same CameraState String that you named on TPCameraListData
+            if (tpCamera == null)
+            {
+                tpCamera = FindObjectOfType<vThirdPersonCamera>();
+                if (tpCamera == null)
+                    return;
+                if (tpCamera)
+                {
+                    tpCamera.SetMainTarget(this.transform);
+                    tpCamera.Init();
+                }
+            }
+        }
 
         protected virtual void RotateWithCamera(Transform cameraTransform)
         {
@@ -173,25 +203,6 @@ namespace Invector.CharacterController
             }
         }
 
-        #endregion
-        //
-        
-        #endregion
-
-        #region Escape & Cursor Input Method            (quit the game as well)
-        //Exc button and Cursor Input Method to be called above
-        protected virtual void ExitGameInput()
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                if (!Cursor.visible)
-                    Cursor.visible = true;
-                else
-                    Application.Quit();
-            }
-        }
-        //
-        #endregion
-  
+        #endregion     
     }
 }

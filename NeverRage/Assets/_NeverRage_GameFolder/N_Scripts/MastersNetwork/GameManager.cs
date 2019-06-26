@@ -9,8 +9,7 @@ using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
 
-
-namespace Com.MyCompany.MyGame
+namespace Invector.CharacterController
 {
     public class GameManager : MonoBehaviourPunCallbacks
     {
@@ -18,10 +17,11 @@ namespace Com.MyCompany.MyGame
         public GameObject playerPrefab;
 
 
-
+      
         #region MonoPun Calls
         void Start()
         {
+
             if (playerPrefab == null)
             {
                 Debug.LogError("<Color=Red><a>Missing</a></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'", this);
@@ -39,6 +39,7 @@ namespace Com.MyCompany.MyGame
                     Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
                 }
             }
+
         }
         #endregion
 
@@ -52,7 +53,7 @@ namespace Com.MyCompany.MyGame
         {
             SceneManager.LoadScene(0);
         }
-       
+
 
         public override void OnPlayerEnteredRoom(Player other)
         {

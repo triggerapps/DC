@@ -292,17 +292,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3846580432845068242, guid: 60b21efff7e4d2b4f8224ef00b2aa3ff,
-        type: 3}
-      propertyPath: playerPrefab
-      value: 
-      objectReference: {fileID: 7364990300277982032, guid: 57c63338b6236dd49a31824bbc7b63dd,
-        type: 3}
     - target: {fileID: 3618700738664265967, guid: 60b21efff7e4d2b4f8224ef00b2aa3ff,
         type: 3}
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 3846580432845068242, guid: 60b21efff7e4d2b4f8224ef00b2aa3ff,
+        type: 3}
+      propertyPath: playerPrefab
+      value: 
+      objectReference: {fileID: 134264757472680671, guid: 14203e4d8e112124297aee6d70fc79af,
+        type: 3}
     - target: {fileID: 3618700738664265966, guid: 60b21efff7e4d2b4f8224ef00b2aa3ff,
         type: 3}
       propertyPath: m_LocalPosition.x

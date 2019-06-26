@@ -37,7 +37,7 @@ namespace Invector.CharacterController
                 var speedDir = Mathf.Abs(direction) + Mathf.Abs(speed);
                 speedDir = Mathf.Clamp(speedDir, 0, 1);
                 var strafeSpeed = (isSprinting ? 1.5f : 1f) * Mathf.Clamp(speedDir, 0f, 1f);
-                
+
                 // strafe extra speed
                 if (isStrafing)
                 {
