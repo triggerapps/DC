@@ -61,10 +61,9 @@ namespace Invector.CharacterController
 
         protected virtual void Start()
         {
-            if (photonView.IsMine)
-            {
-                CharacterInit();
-            }
+           
+            CharacterInit();
+            
         }
 
         protected virtual void CharacterInit()
