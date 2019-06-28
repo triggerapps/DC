@@ -357,10 +357,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1001401708}
+  - component: {fileID: 1001401709}
   - component: {fileID: 1001401712}
   - component: {fileID: 1001401711}
   - component: {fileID: 1001401710}
-  - component: {fileID: 1001401709}
   m_Layer: 5
   m_Name: NameInputField
   m_TagString: Untagged
@@ -398,7 +398,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1001401707}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fc9a3cfabb5d5a4bbe5f2a094c47a33, type: 3}
+  m_Script: {fileID: 11500000, guid: 8cd5e4b1f5d4d294f912d0253c8fe5ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1001401710
@@ -1135,7 +1135,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1760312971}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c58314018d2495240827ff68c858bd5c, type: 3}
+  m_Script: {fileID: 11500000, guid: c53366561c487f84eb5fab7ad78b4d9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxPlayersPerRoom: 4

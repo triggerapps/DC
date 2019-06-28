@@ -550,6 +550,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1480889198}
     m_Modifications:
+    - target: {fileID: 6626388090042342346, guid: f872af161d9cf5b4a85cc2bb036d70b7,
+        type: 3}
+      propertyPath: m_Name
+      value: BackButton
+      objectReference: {fileID: 0}
     - target: {fileID: 6626388090042342325, guid: f872af161d9cf5b4a85cc2bb036d70b7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -654,16 +659,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6626388090042342346, guid: f872af161d9cf5b4a85cc2bb036d70b7,
-        type: 3}
-      propertyPath: m_Name
-      value: BackButton
-      objectReference: {fileID: 0}
-    - target: {fileID: 6626388090042342324, guid: f872af161d9cf5b4a85cc2bb036d70b7,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f872af161d9cf5b4a85cc2bb036d70b7, type: 3}

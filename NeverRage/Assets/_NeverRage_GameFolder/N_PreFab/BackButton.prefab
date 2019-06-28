@@ -120,7 +120,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 6347012049570211835, guid: 60b21efff7e4d2b4f8224ef00b2aa3ff,
+          type: 3}
         m_MethodName: LeaveRoom
         m_Mode: 1
         m_Arguments:
