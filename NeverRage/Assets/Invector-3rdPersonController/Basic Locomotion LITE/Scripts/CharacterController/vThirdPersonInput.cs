@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
 #if UNITY_5_3_OR_NEWER
 using UnityEngine.SceneManagement;
 #endif
 
 namespace Invector.CharacterController
 {
-    public class vThirdPersonInput : MonoBehaviour
+    public class vThirdPersonInput : MonoBehaviourPun
     {
         #region variables
 
@@ -38,11 +40,14 @@ namespace Invector.CharacterController
 
         protected virtual void Start()
         {
+
             //Move Player  get animator script
             cc = GetComponent<vThirdPersonController>();
+            //Move Camera  get Camera script
+            tpCamera = FindObjectOfType<vThirdPersonCamera>();
 
             //Cursor
-             cursorControl();
+            cursorControl();
         }
                  /*
       protected virtual void LateUpdate()
@@ -63,14 +68,16 @@ namespace Invector.CharacterController
 
         protected virtual void Update()
         {
-            if (cc == null) return;             // returns if didn't find the animator script	
-                                                //Move Player  get animator, get camera
-            movementInput_Handler();
-            grabCamera();
+            if (photonView.IsMine)
+            {
+                if (cc == null) return;             // returns if didn't find the animator script	
+                                                    //Move Player  get animator, get camera
+                movementInput_Handler();
+                grabCamera();
 
-            cc.UpdateMotor();                   // call ThirdPersonMotor methods               
-            cc.UpdateAnimator();                // call ThirdPersonAnimator methods	
-
+                cc.UpdateMotor();                   // call ThirdPersonMotor methods               
+                cc.UpdateAnimator();                // call ThirdPersonAnimator methods	
+            }
             //Cursor & Exit
             ExitGameInput();
         }
@@ -78,7 +85,7 @@ namespace Invector.CharacterController
         #region Camera Setup
         protected virtual void grabCamera()
         {
-            tpCamera = FindObjectOfType<vThirdPersonCamera>();
+
             CameraInput();
             //Turn The Player and camera
             UpdateCameraStates();
