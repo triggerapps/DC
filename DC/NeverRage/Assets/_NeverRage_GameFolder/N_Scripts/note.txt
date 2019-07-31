@@ -1,0 +1,22 @@
+Trying to  Keep Track of the Player 
+So I dont Instaite more than one
+So, I also know which one own a controller and which one needs 1
+
+In Manager
+and Playerinput
+
+-I am about to use the other youtube tutorial
+
+---I will make player manager and try to control the camera from there
+I will most likely remove the controlls from the player input script
+
+-----I can name this InputController, and follow the youtube tutorial or 
+---stick with player manager and try to photon way
+
+The photon way: I will take the cameWork method, by calling the camera controller 
+methods from in PlayerManager instead of Input...then I will set the instance to 
+PlayerManager, and then check that instance on GameManager
+
+-----------Right Now
+I can instantiate the players,
+But the controller is moving both at the same time.
