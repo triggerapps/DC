@@ -1,0 +1,28 @@
+Install Git with Apt : 
+
+sudo apt-get update
+sudo apt-get install git
+
+Set Up Git:
+git config --global user.name "Type Your Name between these quotations"
+git config --global user.email "type your youremail@domain.com between these"
+
+To look at the set up type git config --list
+
+
+Set Up Repo
+mk dir (type your dirECTORY NAME)
+cd (put the directory name)
+git clone (copy and paste the http clone link)
+
+
+Pushing To Repo
+git push 
+git commit -m "Commit message"
+git commit
+
+Pulling Repo
+git pull
+
+https://confluence.atlassian.com/bitbucketserver/basic-git-commands-776639767.html
+
