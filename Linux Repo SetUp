@@ -1,4 +1,4 @@
-Install Git with Apt : 
+﻿Install Git with Apt : 
 
 sudo apt-get update
 sudo apt-get install git
@@ -24,7 +24,7 @@ git commit
 git push origin master
 
 Pulling Repo
-git pull
+git pull (Copy and Paste or type the name of the Repo...just copy and paste it)
 
 https://confluence.atlassian.com/bitbucketserver/basic-git-commands-776639767.html
 
