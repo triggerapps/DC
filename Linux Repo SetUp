@@ -18,10 +18,26 @@ git clone (copy and paste the http clone link)
 
 Pushing To Repo
 
-git commit -m "Commit message"
-git commit
 
-git push origin master
+COMMITING TO REPO 
+git commit -m "Commit message"
+//that command will fail and if there was any changes
+//you will see the names of the files- you can copy those name and put it in the "" instead
+
+git commit "name(s) of changed files"
+
+You will be prompted to type a description of changes
+After doing so (click: ctr+o, click enter, click: ctr+x)
+you have now writting a comment, saved it, and then exited the commit section to fully commit
+The file is not completely gone, you need to "Push" it
+
+PUSHING TO MASTER
+
+git push (Copy Paste the name of the Remote Repo between here) master
+ex:  git push https://github.com/triggerapps/DC.git master
+
+TYpe your name...your password 
+
 
 Pulling Repo
 git pull (Copy and Paste or type the name of the Repo...just copy and paste it)
